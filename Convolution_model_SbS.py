@@ -131,18 +131,18 @@ def conv_forward(A_prev, W, b, hparameters):
         a_prev_pad = A_prev_pad[i,:,:,:]               # Select ith training example's padded activation
         for h in range(n_H):           # loop over vertical axis of the output volume
             # Find the vertical start and end of the current "slice" (≈2 lines)
-            vert_start = h
-            vert_end = h + f
+            vert_start = h*stride
+            vert_end = vert_start + f
             
             for w in range(n_W):       # loop over horizontal axis of the output volume
                 # Find the horizontal start and end of the current "slice" (≈2 lines)
-                horiz_start = w
-                horiz_end = w + f
+                horiz_start = w*stride
+                horiz_end = horiz_start + f
                 
                 for c in range(n_C):   # loop over channels (= #filters) of the output volume
                                         
                     # Use the corners to define the (3D) slice of a_prev_pad (See Hint above the cell). (≈1 line)
-                    a_slice_prev = a_prev_pad[horiz_start:horiz_end, vert_start:vert_end, :]
+                    a_slice_prev = a_prev_pad[ vert_start:vert_end, horiz_start:horiz_end, :]
                     
                     # Convolve the (3D) slice with the correct filter W and bias b, to get back one output neuron. (≈3 line)
                     weights = W[:,:,:,c]
